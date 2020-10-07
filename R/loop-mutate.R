@@ -1,5 +1,4 @@
-#' @name loop_mutate
-#' @title `mutate` in loop
+#' mutate in loop
 #' @param .data a data.frame
 #' @param idx idx vector
 #' @param ... expressions
@@ -13,7 +12,6 @@
 #' # Working on groups
 #' @export
 loop_mutate <- function(.data, idx, ...){
-
   # TODO:
   # * optimize?
   # * processing order
@@ -26,7 +24,6 @@ loop_mutate <- function(.data, idx, ...){
       ops.rhs <- call.args[[2]]
       string.expr <- sprintf("mutate(.data, !!ops.lhs := %s)", deparse(substitute(ops.rhs)))
       .data <- eval(parse(text = string.expr))
-      # .data <- mutate(.data, !!ops.1 := rlang::expr(deparse(substitute(ops.2))))
     }
   }
   return(.data)

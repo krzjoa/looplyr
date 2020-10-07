@@ -1,0 +1,16 @@
+destination: docs
+template:
+  params:
+    bootswatch: cosmo
+authors:
+  Krzysztof Joachimiak:
+    href: https://krzjoa.github.io
+reference:
+- title: Loop verbs
+  contents:
+  - loop_mutate
+  - loop_summarise
+- title: Loop operators
+  contents:
+  - '%m>%'
+  - '%f>%'
