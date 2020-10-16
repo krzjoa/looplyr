@@ -16,6 +16,8 @@ knitr::opts_chunk$set(
 # looplyr
 
 <!-- badges: start -->
+[![Travis build status](https://travis-ci.com/krzjoa/looplyr.svg?branch=master)](https://travis-ci.com/krzjoa/looplyr)
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/krzjoa/looplyr?branch=master&svg=true)](https://ci.appveyor.com/project/krzjoa/looplyr)
 <!-- badges: end -->
 
 > Loop Verbs For Grammar of Data Manipulation
@@ -27,9 +29,31 @@ devtools::install_github("krzjoa/looplyr")
 ```
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+`looplyr` provides easy-to-use shortcuts to apply `mutate`/`summarise` in loop and 
+and loop operator to process multiple data.frame-like objects using one `dplyr`/`magrittr` 
+pipe wrapped with curly brackets.
 
-```{r example}
+### `loop_mutate`
+```{r loop_mutate}
+library(dplyr)
 library(looplyr)
-## basic example code
+
+cars %>%
+   loop_mutate(
+     2:4, paste0("speed.", .x) := speed ** .x
+   ) %>%
+   head(5)
+```
+
+### `loop_summarise`
+```{r loop_summarise}
+library(glue)
+quantiles <- c(0.25, 0.50, 0.75)
+iris %>%
+  group_by(Species) %>%
+  loop_summarise(
+     quantiles,
+     glue("Petal.Length.{.x}") := quantile(Petal.Length, .x),
+     glue("Petal.Width.{.x}") := quantile(Petal.Width, .x)
+   )
 ```

@@ -2,19 +2,25 @@
 % Please edit documentation in R/loop-mutate.R
 \name{loop_mutate}
 \alias{loop_mutate}
-\title{mutate in loop}
+\title{Mutate in loop}
 \usage{
-loop_mutate(.data, idx, ...)
+loop_mutate(.data, .x, ...)
 }
 \arguments{
-\item{.data}{a data.frame}
+\item{.data}{a data.frame-like object}
 
-\item{idx}{idx vector}
+\item{.x}{a vector the function is looping on}
 
-\item{...}{expressions}
+\item{...}{Name-value pairs. The name gives the name of the column in the output.
+The value can be:
+
+* A vector of length 1, which will be recycled to the correct length.
+* A vector the same length as the current group (or the whole data frame if ungrouped).
+* NULL, to remove the column.
+* A data frame or tibble, to create multiple columns in the output.}
 }
 \description{
-mutate in loop
+Mutate in loop
 }
 \examples{
 suppressMessages(library(dplyr))
@@ -22,5 +28,4 @@ suppressMessages(library(dplyr))
 cars \%>\%
   loop_mutate(2:4, paste0("speed.", .idx) := speed ** .idx) \%>\%
   head(5)
-# Working on groups
 }
