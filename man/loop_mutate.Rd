@@ -13,11 +13,12 @@ loop_mutate(.data, .x, ...)
 
 \item{...}{Name-value pairs. The name gives the name of the column in the output.
 The value can be:
-
-* A vector of length 1, which will be recycled to the correct length.
-* A vector the same length as the current group (or the whole data frame if ungrouped).
-* NULL, to remove the column.
-* A data frame or tibble, to create multiple columns in the output.}
+\itemize{
+\item A vector of length 1, which will be recycled to the correct length.
+\item A vector the same length as the current group (or the whole data frame if ungrouped).
+\item NULL, to remove the column.
+\item A data frame or tibble, to create multiple columns in the output.
+}}
 }
 \description{
 Mutate in loop
@@ -26,6 +27,6 @@ Mutate in loop
 suppressMessages(library(dplyr))
 # Looping trough exponents
 cars \%>\%
-  loop_mutate(2:4, paste0("speed.", .idx) := speed ** .idx) \%>\%
+  loop_mutate(2:4, paste0("speed.", .x) := speed ** .x) \%>\%
   head(5)
 }

@@ -1,6 +1,5 @@
 #' @name loop-operator
-#'
-#' Map operator
+#' @title Map operator
 #'
 #' @param lhs a list; typically a list of data.frame-like objects handled with
 #' standard dplyr methods
@@ -21,6 +20,7 @@
 #' loop_options(.progress = TRUE)
 #'
 #' @importFrom stringi stri_match
+#' @importFrom dplyr %>%
 #' @examples
 #' library(dplyr)
 #' library(looplyr)
@@ -59,14 +59,17 @@ NULL
   #   pipe_as_string <- sub(
   #     pattern, ".", pipe_as_string
   #   )
-  if (length(pipe_as_string) == 4) {
+
+  if (length(.pipe_expr) == 4) {
     .loop_ops_str  <- .pipe_expr[[2]]
     pipe_as_string <- .pipe_expr[[3]]
     .loop_ops_expr <- parse(text = .loop_ops_str)
     .loop_ops      <- eval(.loop_ops_expr, envir = envir)
+   } else if (length(.pipe_expr) == 3) {
+    pipe_as_string <- .pipe_expr[[2]]
    }
 
-  pipe_as_string <- paste0(". %>% ",  pipe_as_string[[2]])
+  pipe_as_string <- paste0(". %>% ",  pipe_as_string)
 
   parsed_pipe    <- parse(text = pipe_as_string)
   .pipe <- eval(parsed_pipe, envir = envir)
@@ -108,6 +111,7 @@ NULL
 }
 
 #' @rdname loop-operator
+#' @export
 loop_options <- function(...){
   structure(
     .Data = list(...),

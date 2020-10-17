@@ -17,13 +17,14 @@ loop_summarize(.data, .x, ...)
 \item{...}{Name-value pairs of summary functions.
 The name will be the name of the variable in the result.
 The value can be:
-
-* A vector of length 1, e.g. min(x), n(), or sum(is.na(y)).
-* A vector of length n, e.g. quantile().
-* A data frame, to add multiple columns from a single expression.}
+\itemize{
+\item A vector of length 1, e.g. min(x), n(), or sum(is.na(y)).
+\item A vector of length n, e.g. quantile().
+\item A data frame, to add multiple columns from a single expression.
+}}
 }
 \value{
-An object of `tibble` class
+An object of \code{tibble} class
 It combines multiple summaries performed on the input data.frame.
 }
 \description{
@@ -31,13 +32,13 @@ Summarise in loop
 }
 \examples{
 suppressMessages(library(dplyr))
-library(glue)
+suppressMessages(library(glue))
 quantiles <- c(0.25, 0.50, 0.75)
 iris \%>\%
   group_by(Species) \%>\%
   loop_summarise(
       quantiles,
-      glue("Petal.Length.{.idx}") := quantile(Petal.Length, .idx),
-      glue("Petal.Width.{.idx}") := quantile(Petal.Width, .idx)
+      glue("Petal.Length.{.x}") := quantile(Petal.Length, .x),
+      glue("Petal.Width.{.x}") := quantile(Petal.Width, .x)
   )
 }

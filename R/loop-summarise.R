@@ -14,7 +14,7 @@
 #' @importFrom purrr reduce
 #' @examples
 #' suppressMessages(library(dplyr))
-#' library(glue)
+#' suppressMessages(library(glue))
 #' quantiles <- c(0.25, 0.50, 0.75)
 #' iris %>%
 #'   group_by(Species) %>%

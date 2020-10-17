@@ -35,7 +35,8 @@ pipe wrapped with curly brackets.
 
 ### `loop_mutate`
 ```{r loop_mutate}
-library(dplyr)
+suppressMessages(library(dplyr))
+suppressMessages(library(glue))
 library(looplyr)
 
 cars %>%
@@ -47,7 +48,6 @@ cars %>%
 
 ### `loop_summarise`
 ```{r loop_summarise}
-library(glue)
 quantiles <- c(0.25, 0.50, 0.75)
 iris %>%
   group_by(Species) %>%
@@ -56,4 +56,11 @@ iris %>%
      glue("Petal.Length.{.x}") := quantile(Petal.Length, .x),
      glue("Petal.Width.{.x}") := quantile(Petal.Width, .x)
    )
+```
+
+### `%m>%`/`%f>%`
+````{r loop_operator}
+list(cars, mtcars) %m>% {
+   mutate(idx = 1:n())
+}
 ```
