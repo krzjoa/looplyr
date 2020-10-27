@@ -10,6 +10,8 @@
 #' * NULL, to remove the column.
 #' * A data frame or tibble, to create multiple columns in the output.
 #'
+#' @return An object of `tibble` class with multiple columns added with `mutate`.
+#'
 #' @importFrom rlang call_args
 #' @examples
 #' suppressMessages(library(dplyr))

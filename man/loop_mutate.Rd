@@ -20,6 +20,9 @@ The value can be:
 \item A data frame or tibble, to create multiple columns in the output.
 }}
 }
+\value{
+An object of \code{tibble} class with multiple columns added with \code{mutate}.
+}
 \description{
 Mutate in loop
 }
