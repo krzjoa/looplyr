@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # looplyr
 
 <!-- badges: start -->
+[![Documentation](https://img.shields.io/badge/documentation-looplyr-orange.svg?colorB=E91E63)](https://krzjoa.github.io/looplyr/)
 [![Travis build status](https://travis-ci.com/krzjoa/looplyr.svg?branch=master)](https://travis-ci.com/krzjoa/looplyr)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/krzjoa/looplyr?branch=master&svg=true)](https://ci.appveyor.com/project/krzjoa/looplyr)
 <!-- badges: end -->
@@ -56,11 +57,4 @@ iris %>%
      glue("Petal.Length.{.x}") := quantile(Petal.Length, .x),
      glue("Petal.Width.{.x}") := quantile(Petal.Width, .x)
    )
-```
-
-### `%m>%`/`%f>%`
-````{r loop_operator}
-list(cars, mtcars) %m>% {
-   mutate(idx = 1:n())
-}
 ```

@@ -1,0 +1,73 @@
+---
+title: "Time Series Manipulation with `looplyr`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Data Manipulation with looplyr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Adding lags for time series
+
+```{r setup}
+suppressMessages(library(dplyr))
+library(looplyr)
+library(parsnip)
+library(rsample)
+library(ggplot2)
+```
+
+One of the simplest ways to methods to apply regression algorithms 
+to times series forecasting is to use lagged variables.
+
+```{r preparing.data}
+dax_stock <- 
+  EuStockMarkets %>% 
+  as_tibble() %>% 
+  select(value = DAX)
+```
+
+Here is the place where `looply` comes into play.
+We use `loop_mutate` function as shortcut for **for** loop and `dplyr::mutate` combination.
+
+```{r loop_mutate}
+dax_stock_dataset <- 
+  dax_stock %>% 
+    loop_mutate(
+      1:7, paste0("value.", .x) := lag(value, .x)
+    ) %>% 
+    na.omit() %>% 
+    initial_time_split(prop = 0.9)
+```
+
+## Defining model
+```{r defining.model}
+model_linear <- 
+  linear_reg() %>% 
+  set_engine("lm") %>% 
+  set_mode("regression") %>% 
+  fit(value ~ ., training(dax_stock_dataset))
+
+fcast <- 
+  model_linear %>% 
+  predict(testing(dax_stock_dataset))
+
+true_vs_fcast <- tibble(
+  true  = testing(dax_stock_dataset)$value,
+  fcast = fcast$.pred
+) %>% 
+  mutate(n = 1:n()) %>% 
+  tidyr::pivot_longer(c(true, fcast))  
+  
+ggplot(true_vs_fcast) +
+  geom_line(aes(x = n, y = value, col = name)) +
+  theme_minimal() +
+  ggtitle("DAX stock - true values vs forecast")
+```
